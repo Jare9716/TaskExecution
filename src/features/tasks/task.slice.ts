@@ -3,17 +3,23 @@
  * @description Redux slice managing task state and offline synchronization logic.
  * Implements the "Stale-While-Revalidate" pattern manually via Thunks.
  */
+
+import NetInfo from "@react-native-community/netinfo";
+
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { Task, TaskAuditData } from "@/models/task";
+
 import { TaskRepository } from "./task.repository";
 import { MockApi } from "@/services/api.mock";
 
-interface TasksState {
+import { Task, TaskAuditData } from "@/models";
+
+//TODO: create the corresponding file on models
+type TasksState = {
 	list: Task[];
 	loading: boolean;
 	syncing: boolean;
 	error: string | null;
-}
+};
 
 const initialState: TasksState = {
 	list: [],
@@ -73,6 +79,12 @@ export const completeTask = createAsyncThunk(
 export const syncPendingTasks = createAsyncThunk(
 	"tasks/sync",
 	async (_, { dispatch }) => {
+		const netStatus = await NetInfo.fetch();
+
+		if (!netStatus.isConnected) {
+			return;
+		}
+
 		const pendingTasks = await TaskRepository.getPendingSyncTasks();
 
 		for (const task of pendingTasks) {
@@ -130,7 +142,9 @@ const tasksSlice = createSlice({
 			})
 			.addCase(syncPendingTasks.fulfilled, (state, action) => {
 				state.syncing = false;
-				state.list = action.payload;
+				if (action.payload) {
+					state.list = action.payload;
+				}
 			})
 			.addCase(syncPendingTasks.rejected, (state) => {
 				state.syncing = false;

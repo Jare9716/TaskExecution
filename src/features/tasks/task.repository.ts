@@ -4,7 +4,7 @@
  * Handles mapping between the flat SQL structure and the nested Task domain model.
  */
 import { getDB } from "@/services/database";
-import { Task } from "@/models/task";
+import { Task } from "@/models";
 
 export const TaskRepository = {
 	upsertTasks: async (tasks: Task[]) => {

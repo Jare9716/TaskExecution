@@ -9,19 +9,19 @@ export type TaskStatus = "available" | "in_progress" | "completed" | "expired";
 
 export type SyncStatus = "synced" | "pending_update";
 
-export interface TaskLocation {
+export type TaskLocation = {
 	lat: number;
 	lng: number;
 	address: string;
-}
+};
 
-export interface TaskAuditData {
+export type TaskAuditData = {
 	comment?: string;
 	photo_local_uri?: string;
 	completed_at?: string;
-}
+};
 
-export interface Task {
+export type Task = {
 	// Remote Data (Matches Zubale JSON Spec)
 	id: string;
 	title: string;
@@ -35,4 +35,4 @@ export interface Task {
 	sync_status: SyncStatus;
 	local_changes?: TaskAuditData | null;
 	last_updated_at: number;
-}
+};

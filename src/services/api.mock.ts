@@ -3,7 +3,7 @@
  * @description Simulates network calls to Zubale's backend.
  * Generates the required JSON structure for the challenge.
  */
-import { Task } from "@/models/task";
+import { Task } from "@/models";
 
 const DELAY_MS = 1000;
 
