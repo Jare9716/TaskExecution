@@ -1,13 +1,28 @@
 import { Task } from "@/models/task";
 
-import { ItemListColor } from "@/models";
+import { Text } from "@/models";
 
-export const getTaskColor = (task: Task): ItemListColor => {
+export const getTaskStatus = (task: Task): { text: string; color: Text } => {
 	if (task.status === "available") {
-		return "available";
+		return { text: "Pending", color: "tertiary" };
 	} else if (task.sync_status === "synced") {
-		return "synced";
+		return { text: "Synced", color: "success" };
 	} else {
-		return "pending";
+		return { text: "Syncing", color: "warning" };
 	}
+};
+
+const completedTasks = (tasks: Task[]) => {
+	return tasks.filter((task) => task.status === "completed").length;
+};
+
+const pendingTasks = (tasks: Task[]) => {
+	return tasks.filter((task) => task.status === "available").length;
+};
+
+export const tasksState = (tasks: Task[]) => {
+	const completed = completedTasks(tasks);
+	const pending = pendingTasks(tasks);
+	const total = tasks.length;
+	return { completed, pending, total };
 };

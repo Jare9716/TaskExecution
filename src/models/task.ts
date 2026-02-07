@@ -5,7 +5,7 @@
  * and extends them with local-only fields for offline synchronization state.
  */
 
-export type TaskStatus = "available" | "in_progress" | "completed" | "expired";
+export type TaskStatus = "available" | "completed";
 
 export type SyncStatus = "synced" | "pending_update";
 
@@ -35,4 +35,11 @@ export type Task = {
 	sync_status: SyncStatus;
 	local_changes?: TaskAuditData | null;
 	last_updated_at: number;
+};
+
+export type TasksState = {
+	list: Task[];
+	loading: boolean;
+	syncing: boolean;
+	error: string | null;
 };

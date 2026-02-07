@@ -46,10 +46,10 @@ export const body: Record<Body, TextStyle> = {
 		letterSpacing: 0.5,
 	},
 	body2: {
-		fontWeight: "400",
-		fontSize: 16,
-		lineHeight: 19,
-		letterSpacing: 0.25,
+		fontWeight: "600",
+		fontSize: 14,
+		lineHeight: 17,
+		letterSpacing: 0.1,
 	},
 };
 
@@ -57,6 +57,12 @@ export const button: Record<Button, TextStyle> = {
 	button1: {
 		fontWeight: "400",
 		fontSize: 16,
+		lineHeight: 19,
+		letterSpacing: 1.25,
+	},
+	button2: {
+		fontWeight: "400",
+		fontSize: 14,
 		lineHeight: 19,
 		letterSpacing: 1.25,
 	},

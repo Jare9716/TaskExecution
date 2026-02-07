@@ -11,15 +11,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { TaskRepository } from "./task.repository";
 import { MockApi } from "@/services/api.mock";
 
-import { Task, TaskAuditData } from "@/models";
-
-//TODO: create the corresponding file on models
-type TasksState = {
-	list: Task[];
-	loading: boolean;
-	syncing: boolean;
-	error: string | null;
-};
+import { Task, TaskAuditData, TasksState } from "@/models";
 
 const initialState: TasksState = {
 	list: [],
