@@ -1,5 +1,5 @@
 export type RootStackParamList = {
-	Debug: undefined;
+	TaskDetail: { taskId: string };
 	TaskList: undefined;
 };
 

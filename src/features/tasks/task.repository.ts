@@ -10,21 +10,30 @@ export const TaskRepository = {
 	upsertTasks: async (tasks: Task[]) => {
 		const db = await getDB();
 
+		const pendingTasks = await db.getAllAsync<{ id: string }>(
+			`SELECT id FROM tasks WHERE sync_status = ?`,
+			["pending_update"],
+		);
+
+		const pendingIds = new Set(pendingTasks.map((t) => t.id));
+
 		await db.withTransactionAsync(async () => {
 			for (const task of tasks) {
+				if (pendingIds.has(task.id)) {
+					console.log(`[Repository] Conservando versión local de: ${task.id}`);
+					continue;
+				}
 				await db.runAsync(
 					`INSERT OR REPLACE INTO tasks (
-            id, title, price, status, 
-            address, lat, lng, 
-            image_url, expires_at, sync_status, last_updated_at
-           )
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced', ?);`,
+                    id, title, price, status, 
+                    address, lat, lng, 
+                    image_url, expires_at, sync_status, last_updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "synced", ?);`,
 					[
 						task.id,
 						task.title,
 						task.price,
 						task.status,
-						// Mapping nested location to flat columns
 						task.location.address,
 						task.location.lat,
 						task.location.lng,
@@ -43,7 +52,6 @@ export const TaskRepository = {
 			`SELECT * FROM tasks ORDER BY last_updated_at DESC;`,
 		);
 
-		// Mapping flat SQL rows back to nested Domain Model
 		return rows.map((row) => ({
 			id: row.id,
 			title: row.title,

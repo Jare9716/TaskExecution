@@ -18,7 +18,7 @@ const TaskListScreen = () => {
 
 	const handlePressTask = useCallback(
 		(task: Task) => {
-			// navigation.navigate("TaskDetail", { taskId: task.id });
+			navigation.navigate("TaskDetail", { taskId: task.id });
 		},
 		[navigation],
 	);

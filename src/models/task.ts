@@ -1,13 +1,18 @@
 /**
  * @file task.ts
  * @description Core domain models for the Task and Audit features.
- * Defines the shape of Task objects as received from the remote API
- * and extends them with local-only fields for offline synchronization state.
  */
 
-export type TaskStatus = "available" | "completed";
+export enum TaskStatus {
+	AVAILABLE = "available",
+	COMPLETED = "completed",
+	EXPIRED = "expired",
+}
 
-export type SyncStatus = "synced" | "pending_update";
+export enum SyncStatus {
+	SYNCED = "synced",
+	PENDING = "pending_update",
+}
 
 export type TaskLocation = {
 	lat: number;
@@ -22,7 +27,6 @@ export type TaskAuditData = {
 };
 
 export type Task = {
-	// Remote Data (Matches Zubale JSON Spec)
 	id: string;
 	title: string;
 	price: number;
@@ -31,7 +35,6 @@ export type Task = {
 	image_url: string;
 	expires_at: string;
 
-	// Local/Offline State
 	sync_status: SyncStatus;
 	local_changes?: TaskAuditData | null;
 	last_updated_at: number;

@@ -1,5 +1,5 @@
 export * from "./task";
-export * from "./rootStack";
+export * from "./navigation";
 export * from "./styles";
 export * from "./snackbar";
 export * from "./taskList";
