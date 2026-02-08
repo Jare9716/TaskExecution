@@ -3,6 +3,7 @@ import {
 	Blue,
 	Green,
 	Yellow,
+	Red,
 	Text,
 	Surface,
 	Border,
@@ -38,6 +39,10 @@ const yellow: Record<Yellow, string> = {
 	s600: "#FFC107",
 };
 
+const red: Record<Red, string> = {
+	s700: "#D73726",
+};
+
 export const text: Record<Text, string> = {
 	primary: neutral.s1000,
 	secondary: neutral.s800,
@@ -46,6 +51,7 @@ export const text: Record<Text, string> = {
 	invert: neutral.s0,
 	success: green.s600,
 	warning: yellow.s600,
+	error: red.s700,
 };
 
 export const surface: Record<Surface, string> = {

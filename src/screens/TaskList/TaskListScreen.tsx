@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { View, FlatList, RefreshControl, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -9,12 +10,14 @@ import { Task } from "@/models/task";
 import TaskItem from "./components/TaskListItem";
 import TaskRecapCard from "./components/TaskRecapCard";
 
-import { Spacing, Colors } from "@/styles";
+import { FilledButton } from "@/components";
+
+import { Spacing, Colors, Buttons } from "@/styles";
 
 const TaskListScreen = () => {
 	const navigation = useNavigation();
 
-	const { tasks, loading, refresh, syncing, auditTask, forceSync } = useTasks();
+	const { tasks, loading, refresh, auditTask, forceSync, syncing } = useTasks();
 
 	const handlePressTask = useCallback(
 		(task: Task) => {
@@ -33,8 +36,8 @@ const TaskListScreen = () => {
 	);
 
 	return (
-		<View style={styles.container}>
-			<TaskRecapCard tasks={tasks} forceSync={forceSync} />
+		<SafeAreaView style={styles.container} edges={["bottom"]}>
+			<TaskRecapCard tasks={tasks} syncing={syncing} />
 
 			<FlatList
 				data={tasks}
@@ -50,19 +53,34 @@ const TaskListScreen = () => {
 					index,
 				})}
 			/>
-		</View>
+			<View style={styles.buttonContainer}>
+				<FilledButton
+					title="Force sync"
+					onPress={forceSync}
+					iconName="sync"
+					style={styles.button}
+				/>
+			</View>
+		</SafeAreaView>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: Colors.surface.secondary,
-		padding: Spacing.spacing.x4,
+		paddingHorizontal: Spacing.spacing.x4,
+		paddingTop: Spacing.spacing.x4,
 		gap: Spacing.spacing.x4,
 		flex: 1,
 	},
 	flatListContainer: {
 		gap: Spacing.spacing.x2,
+	},
+	buttonContainer: {
+		paddingVertical: Spacing.spacing.x4,
+	},
+	button: {
+		...Buttons.filledLarge.primary,
 	},
 });
 

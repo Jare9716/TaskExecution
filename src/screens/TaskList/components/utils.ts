@@ -1,6 +1,6 @@
-import { Task } from "@/models/task";
+import { NetInfoState } from "@react-native-community/netinfo";
 
-import { Text } from "@/models";
+import { Task, Text } from "@/models";
 
 export const getTaskStatus = (task: Task): { text: string; color: Text } => {
 	if (task.status === "available") {
@@ -25,4 +25,24 @@ export const tasksState = (tasks: Task[]) => {
 	const pending = pendingTasks(tasks);
 	const total = tasks.length;
 	return { completed, pending, total };
+};
+
+export const getSyncStatus = (
+	syncStatus: boolean,
+): { text: string; color: Text } => {
+	if (syncStatus) {
+		return { text: "Syncing", color: "warning" };
+	} else {
+		return { text: "Free", color: "success" };
+	}
+};
+
+export const getNetInfoStatus = (
+	netInfo: NetInfoState,
+): { text: string; color: Text } => {
+	if (netInfo.isConnected) {
+		return { text: "Connected", color: "success" };
+	} else {
+		return { text: "Disconnected", color: "error" };
+	}
 };

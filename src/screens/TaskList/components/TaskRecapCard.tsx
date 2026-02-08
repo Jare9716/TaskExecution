@@ -1,51 +1,52 @@
 import { View, Text, StyleSheet } from "react-native";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 import { TaskRecapCardProps } from "@/models";
 
-import { tasksState } from "./utils";
+import { tasksState, getSyncStatus, getNetInfoStatus } from "./utils";
 
-import { FilledButton } from "@/components";
+import { Spacing, Colors, Typography } from "@/styles";
 
-import { Buttons, Spacing, Colors, Typography } from "@/styles";
+const TaskRecapCard = ({ tasks, syncing }: TaskRecapCardProps) => {
+	const netInfo = useNetInfo();
 
-const TaskRecapCard = ({ tasks, forceSync }: TaskRecapCardProps) => {
 	const { completed, pending, total } = tasksState(tasks);
-
-	const onFirstPress = () => {
-		console.log("onFirstPress");
-	};
+	const { text: syncText, color: syncColor } = getSyncStatus(syncing);
+	const { text: netInfoText, color: netInfoColor } = getNetInfoStatus(netInfo);
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.informationConatiner}>
+			<View style={styles.headerContainer}>
 				<View style={styles.titleContainer}>
 					<Text style={styles.titleText}>Tasks</Text>
 					<Text style={styles.titleValue}>{total}</Text>
 				</View>
-				<View style={styles.subtitleContainer}>
-					<View style={styles.subtitleLeft}>
-						<Text style={styles.titleText}>Completed</Text>
-						<Text style={styles.subtitleText}>{completed}</Text>
-					</View>
-					<View style={styles.subtitleRight}>
-						<Text style={styles.titleText}>Pending</Text>
-						<Text style={styles.subtitleText}>{pending}</Text>
-					</View>
+				<View style={styles.titleContainer}>
+					<Text style={styles.titleText}>Completed</Text>
+					<Text style={styles.titleValue}>{completed}</Text>
+				</View>
+				<View style={styles.titleContainer}>
+					<Text style={styles.titleText}>Pending</Text>
+					<Text style={styles.titleValue}>{pending}</Text>
 				</View>
 			</View>
-			<View style={styles.buttonContainer}>
-				<FilledButton
-					title="Add"
-					onPress={onFirstPress}
-					iconName="add"
-					style={styles.button}
-				/>
-				<FilledButton
-					title="Force sync"
-					onPress={forceSync}
-					iconName="sync"
-					style={styles.button}
-				/>
+			<View style={styles.bottomContainer}>
+				<View style={styles.subtitleLeft}>
+					<Text style={styles.titleText}>Server status</Text>
+					<Text
+						style={[styles.subtitleText, { color: Colors.text[syncColor] }]}
+					>
+						{syncText}
+					</Text>
+				</View>
+				<View style={styles.subtitleRight}>
+					<Text style={styles.titleText}>Internet</Text>
+					<Text
+						style={[styles.subtitleText, { color: Colors.text[netInfoColor] }]}
+					>
+						{netInfoText}
+					</Text>
+				</View>
 			</View>
 		</View>
 	);
@@ -56,15 +57,16 @@ const styles = StyleSheet.create({
 		borderRadius: Spacing.radius.md,
 		backgroundColor: Colors.surface.primary,
 	},
-	informationConatiner: {
-		paddingHorizontal: Spacing.spacing.x2,
-		paddingVertical: Spacing.spacing.x4,
-		gap: Spacing.spacing.x4,
-		borderBottomColor: Colors.border.secondary,
+	headerContainer: {
+		padding: Spacing.spacing.x4,
+		flexDirection: "row",
+		justifyContent: "space-between",
 		borderBottomWidth: 1,
+		borderBottomColor: Colors.border.secondary,
 	},
 	titleContainer: {
 		gap: Spacing.spacing.x1,
+		alignItems: "center",
 	},
 	titleText: {
 		...Typography.subtitle.subtitle2,
@@ -74,7 +76,9 @@ const styles = StyleSheet.create({
 		...Typography.headline.headline4,
 		color: Colors.text.tertiary,
 	},
-	subtitleContainer: {
+	bottomContainer: {
+		padding: Spacing.spacing.x4,
+		justifyContent: "space-between",
 		flexDirection: "row",
 	},
 	subtitleLeft: {
@@ -88,18 +92,6 @@ const styles = StyleSheet.create({
 	},
 	subtitleText: {
 		...Typography.body.body1,
-		color: Colors.text.secondary,
-	},
-	buttonContainer: {
-		paddingHorizontal: Spacing.spacing.x2,
-		paddingVertical: Spacing.spacing.x4,
-		gap: Spacing.spacing.x4,
-		flexDirection: "row",
-	},
-	button: {
-		...Buttons.filledSmall.primary,
-		flex: 1,
-		flexShrink: 1,
 	},
 });
 

@@ -15,6 +15,8 @@ export type Green = "s600";
 
 export type Yellow = "s600";
 
+export type Red = "s700";
+
 export type Text =
 	| "primary"
 	| "secondary"
@@ -22,7 +24,8 @@ export type Text =
 	| "contrast"
 	| "invert"
 	| "success"
-	| "warning";
+	| "warning"
+	| "error";
 
 export type Surface = "primary" | "secondary" | "tertiary";
 

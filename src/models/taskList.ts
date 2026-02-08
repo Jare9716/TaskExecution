@@ -8,5 +8,5 @@ export type TaskListItemProps = {
 
 export type TaskRecapCardProps = {
 	tasks: Task[];
-	forceSync: () => void;
+	syncing: boolean;
 };
