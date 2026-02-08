@@ -11,7 +11,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { TaskRepository } from "./task.repository";
 import { MockApi } from "@/services/api.mock";
 
-import { Task, TaskAuditData, TasksState } from "@/models";
+import { Task, TaskAuditData, TasksState, TaskStatus } from "@/models";
 
 const initialState: TasksState = {
 	list: [],
@@ -54,7 +54,7 @@ export const completeTask = createAsyncThunk(
 	async (payload: { taskId: string; data: TaskAuditData }, { dispatch }) => {
 		// 1. Save to Local DB as 'pending_update'
 		await TaskRepository.markAsPendingSync(payload.taskId, {
-			status: "completed",
+			status: TaskStatus.COMPLETED,
 			local_changes: payload.data,
 		});
 

@@ -11,24 +11,31 @@ export const TaskRepository = {
 		const db = await getDB();
 
 		const pendingTasks = await db.getAllAsync<{ id: string }>(
-			`SELECT id FROM tasks WHERE sync_status = ?`,
-			["pending_update"],
+			`SELECT id FROM tasks WHERE sync_status = 'pending_update'`,
 		);
 
 		const pendingIds = new Set(pendingTasks.map((t) => t.id));
 
 		await db.withTransactionAsync(async () => {
 			for (const task of tasks) {
+				// 2. CONFLICT RESOLUTION:
+				// Si el usuario modificó esta tarea y no se ha subido,
+				// IGNORAMOS la versión que viene del servidor.
 				if (pendingIds.has(task.id)) {
-					console.log(`[Repository] Conservando versión local de: ${task.id}`);
+					console.log(
+						`[Repository] Protegiendo tarea local: ${task.id} (No sobrescribir)`,
+					);
 					continue;
 				}
+
+				// Si no hay conflicto, actualizamos normalmente
 				await db.runAsync(
 					`INSERT OR REPLACE INTO tasks (
-                    id, title, price, status, 
-                    address, lat, lng, 
-                    image_url, expires_at, sync_status, last_updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, "synced", ?);`,
+          id, title, price, status, 
+          address, lat, lng, 
+          image_url, expires_at, sync_status, last_updated_at
+         )
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'synced', ?);`,
 					[
 						task.id,
 						task.title,

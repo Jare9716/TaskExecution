@@ -3,7 +3,7 @@
  * @description Simulates network calls to Zubale's backend.
  * Generates the required JSON structure for the challenge.
  */
-import { Task } from "@/models";
+import { Task, TaskStatus, SyncStatus } from "@/models";
 
 const DELAY_MS = 1000;
 
@@ -12,7 +12,7 @@ const MOCK_TASKS: Partial<Task>[] = [
 		id: "task_001",
 		title: "Audit Coca-Cola Shelf",
 		price: 50,
-		status: "available",
+		status: TaskStatus.AVAILABLE,
 		location: {
 			lat: 19.4326,
 			lng: -99.1332,
@@ -25,7 +25,7 @@ const MOCK_TASKS: Partial<Task>[] = [
 		id: "task_002",
 		title: "Check Price - Pepsi 2L",
 		price: 35,
-		status: "available",
+		status: TaskStatus.AVAILABLE,
 		location: {
 			lat: 19.435,
 			lng: -99.13,
@@ -43,7 +43,7 @@ export const MockApi = {
 				// Return deep copy to simulate fresh data
 				const data = MOCK_TASKS.map((t) => ({
 					...t,
-					sync_status: "synced",
+					sync_status: SyncStatus.SYNCED,
 					last_updated_at: Date.now(),
 				})) as Task[];
 				resolve(data);
