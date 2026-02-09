@@ -17,8 +17,3 @@ export type IconButtonProps = {
 	type: IconColor;
 	onPress?: () => void;
 };
-
-export type TextButtonProps = {
-	title: string;
-	onPress: () => void;
-};

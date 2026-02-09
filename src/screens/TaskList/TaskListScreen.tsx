@@ -1,23 +1,24 @@
-import { useCallback } from "react";
-import { View, FlatList, RefreshControl, StyleSheet } from "react-native";
+import { useCallback, useEffect } from "react";
+import { View, FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useNavigation } from "@react-navigation/native";
 
 import { useTasks } from "@/features/tasks/hooks/useTasks";
-import { Task } from "@/models/task";
 
+import { Task } from "@/models/task";
+import { clearDatabase } from "@/services/database";
+
+import { FilledButton, LoadingView } from "@/components";
 import TaskItem from "./components/TaskListItem";
 import TaskRecapCard from "./components/TaskRecapCard";
-
-import { FilledButton } from "@/components";
 
 import { Spacing, Colors, Buttons } from "@/styles";
 
 const TaskListScreen = () => {
 	const navigation = useNavigation();
 
-	const { tasks, loading, refresh, auditTask, forceSync, syncing } = useTasks();
+	const { tasks, loading, refresh, auditTask, forceSync } = useTasks();
 
 	const handlePressTask = useCallback(
 		(task: Task) => {
@@ -35,33 +36,43 @@ const TaskListScreen = () => {
 		[handlePressTask, auditTask],
 	);
 
-	return (
-		<SafeAreaView style={styles.container} edges={["bottom"]}>
-			<TaskRecapCard tasks={tasks} syncing={syncing} />
+	useEffect(() => {
+		refresh();
+	}, []);
 
-			<FlatList
-				data={tasks}
-				contentContainerStyle={styles.flatListContainer}
-				keyExtractor={(item) => item.id}
-				renderItem={renderItem}
-				refreshControl={
-					<RefreshControl refreshing={loading} onRefresh={refresh} />
-				}
-				getItemLayout={(data, index) => ({
-					length: 119 + 8,
-					offset: (119 + 8) * index,
-					index,
-				})}
-			/>
-			<View style={styles.buttonContainer}>
-				<FilledButton
-					title="Force sync"
-					onPress={forceSync}
-					iconName="sync"
-					style={styles.button}
+	return (
+		<LoadingView loading={loading}>
+			<SafeAreaView style={styles.container} edges={["bottom"]}>
+				<TaskRecapCard tasks={tasks} loading={loading} />
+
+				<FlatList
+					data={tasks}
+					contentContainerStyle={styles.flatListContainer}
+					keyExtractor={(item) => item.id}
+					renderItem={renderItem}
+					getItemLayout={(data, index) => ({
+						length: 119 + 8,
+						offset: (119 + 8) * index,
+						index,
+					})}
 				/>
-			</View>
-		</SafeAreaView>
+				<View style={styles.buttonContainer}>
+					<FilledButton
+						title="Force sync"
+						onPress={forceSync}
+						iconName="sync"
+						style={styles.button}
+					/>
+					{/* TODO: Remove this button */}
+					<FilledButton
+						title="Clear database"
+						onPress={clearDatabase}
+						iconName="delete"
+						style={styles.button}
+					/>
+				</View>
+			</SafeAreaView>
+		</LoadingView>
 	);
 };
 

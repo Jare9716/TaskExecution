@@ -1,7 +1,7 @@
 import { memo, useCallback } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 
-import { getTaskStatus } from "./utils";
+import { getTaskStatus } from "@/utils/tasksUtils";
 import { applyBackground } from "@/utils/pressablesFeedback";
 import { numberFormat, dateToString } from "@/utils/textTransform";
 

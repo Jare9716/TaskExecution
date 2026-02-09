@@ -111,9 +111,8 @@ export const TaskRepository = {
 
 	markAsSynced: async (taskId: string) => {
 		const db = await getDB();
-		await db.runAsync(
-			`UPDATE tasks SET sync_status = 'synced', local_changes = NULL WHERE id = ?;`,
-			[taskId],
-		);
+		await db.runAsync(`UPDATE tasks SET sync_status = 'synced' WHERE id = ?;`, [
+			taskId,
+		]);
 	},
 };

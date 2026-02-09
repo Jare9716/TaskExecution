@@ -1,12 +1,12 @@
 import { NumberFormatProps } from "@/models";
 
-export function numberFormat({ options }: NumberFormatProps) {
+export const numberFormat = ({ options }: NumberFormatProps) => {
 	const numberFormat = new Intl.NumberFormat("es-US", options);
 
 	return numberFormat;
-}
+};
 
-export function dateToString(date: string | Date) {
+export const dateToString = (date: string | Date) => {
 	const dateObject = new Date(date);
 
 	const year = dateObject.getFullYear();
@@ -14,4 +14,4 @@ export function dateToString(date: string | Date) {
 	const day = dateObject.getDate();
 
 	return `${day}-${month}-${year}`;
-}
+};

@@ -40,3 +40,17 @@ export const initDatabase = async () => {
     );
   `);
 };
+
+//TODO: Remove this function
+/**
+```typescript
+* ⚠️ DANGER: Deletes the entire database and recreates it from scratch.
+* Useful only for development and testing.
+```
+ */
+export const clearDatabase = async () => {
+	const db = await getDB();
+	await db.execAsync("DROP TABLE IF EXISTS tasks;");
+	await initDatabase();
+	console.log("♻️ Database reset completed");
+};

@@ -16,7 +16,6 @@ import { Task, TaskAuditData, TasksState, TaskStatus } from "@/models";
 const initialState: TasksState = {
 	list: [],
 	loading: false,
-	syncing: false,
 	error: null,
 };
 
@@ -41,7 +40,6 @@ export const loadTasks = createAsyncThunk(
 			const finalTasks = await TaskRepository.getAllTasks();
 			return finalTasks;
 		} catch (error) {
-			console.warn("Offline or Network Error", error);
 			// If network fails, we rely on the local data already dispatched
 			throw error;
 		}
@@ -62,22 +60,25 @@ export const completeTask = createAsyncThunk(
 		const tasks = await TaskRepository.getAllTasks();
 		dispatch(setTasks(tasks));
 
-		// 3. Trigger Background Sync
-		dispatch(syncPendingTasks());
+		// 3. Trigger Background Sync and WAIT for it
+		return await dispatch(syncPendingTasks()).unwrap();
 	},
 );
 
 // Thunk: Sync Manager (The background job)
+//TODO: THIS THUNK IS BEEING CALLED CONSTANTLY, I NEED TO FIX THIS
 export const syncPendingTasks = createAsyncThunk(
 	"tasks/sync",
-	async (_, { dispatch }) => {
+	async (_, { rejectWithValue }) => {
+		//TODO: check if we can use useNetInfo here
 		const netStatus = await NetInfo.fetch();
 
 		if (!netStatus.isConnected) {
-			return;
+			return rejectWithValue("No internet connection");
 		}
 
 		const pendingTasks = await TaskRepository.getPendingSyncTasks();
+		const errors: string[] = [];
 
 		for (const task of pendingTasks) {
 			try {
@@ -88,13 +89,18 @@ export const syncPendingTasks = createAsyncThunk(
 
 				// If success, mark as synced locally
 				await TaskRepository.markAsSynced(task.id);
-			} catch (e) {
-				console.log(`Failed to sync task ${task.id}, will retry later.`);
+			} catch (e: any) {
+				errors.push(`Task ${task.id}: ${e.message || "Unknown error"}`);
 			}
 		}
 
 		// Refresh final state
 		const finalTasks = await TaskRepository.getAllTasks();
+
+		if (errors.length > 0) {
+			return rejectWithValue(errors.join(", "));
+		}
+
 		return finalTasks;
 	},
 );
@@ -109,7 +115,7 @@ const tasksSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			// Load Tasks Flow
+			// Load Tasks Flo
 			.addCase(loadTasks.pending, (state) => {
 				state.loading = true;
 				state.error = null;
@@ -122,7 +128,6 @@ const tasksSlice = createSlice({
 			})
 			.addCase(loadTasks.rejected, (state, action) => {
 				state.loading = false;
-				// Don't set error if we have local data, just log it
 				if (state.list.length === 0) {
 					state.error = action.error.message || "Error loading tasks";
 				}
@@ -130,16 +135,17 @@ const tasksSlice = createSlice({
 
 			// Sync Flow
 			.addCase(syncPendingTasks.pending, (state) => {
-				state.syncing = true;
+				state.loading = true;
 			})
 			.addCase(syncPendingTasks.fulfilled, (state, action) => {
-				state.syncing = false;
+				state.loading = false;
 				if (action.payload) {
 					state.list = action.payload;
 				}
 			})
-			.addCase(syncPendingTasks.rejected, (state) => {
-				state.syncing = false;
+			.addCase(syncPendingTasks.rejected, (state, action) => {
+				state.loading = false;
+				state.error = (action.payload as string) || "Error syncing tasks";
 			});
 	},
 });

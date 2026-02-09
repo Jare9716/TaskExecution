@@ -20,22 +20,22 @@ const opacityValue = (state: PressableStateCallbackType): ViewStyle => {
  * Hight order function that takes the pressable state and returns a style object with the backgroundColor property.
  * Returns a function that takes the pressable state and returns a style object.
  */
-export function applyBackground(style: PressableStyle) {
+export const applyBackground = (style: PressableStyle) => {
 	return (state: PressableStateCallbackType): StyleProp<ViewStyle> => {
 		const base = typeof style === "function" ? style(state) : style;
 
 		return [base, backgroundColor(state)];
 	};
-}
+};
 
 /**
  * Hight order function that takes the pressable state and returns a style object with the opacity property.
  * Returns a function that takes the pressable state and returns a style object.
  */
-export function applyOpacity(style: PressableStyle) {
+export const applyOpacity = (style: PressableStyle) => {
 	return (state: PressableStateCallbackType): StyleProp<ViewStyle> => {
 		const base = typeof style === "function" ? style(state) : style;
 
 		return [base, opacityValue(state)];
 	};
-}
+};

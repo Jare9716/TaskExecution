@@ -58,10 +58,11 @@ export const surface: Record<Surface, string> = {
 	primary: neutral.s0,
 	secondary: blue.s50,
 	tertiary: neutral.s25,
+	invert: neutral.s900,
 };
 
 export const border: Record<Border, string> = {
-	primary: blue.s50,
+	primary: neutral.s600,
 	secondary: neutral.s100,
 };
 

@@ -27,7 +27,7 @@ export type Text =
 	| "warning"
 	| "error";
 
-export type Surface = "primary" | "secondary" | "tertiary";
+export type Surface = "primary" | "secondary" | "tertiary" | "invert";
 
 export type Border = "primary" | "secondary";
 

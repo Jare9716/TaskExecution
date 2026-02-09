@@ -1,2 +1,2 @@
-export { default as TaskListScreen } from "./TaskList/TaskListScreen";
-export { default as TaskDetailScreen } from "./TaskDetailScreen";
+export { default as TaskListScreen } from "./taskList/TaskListScreen";
+export { default as TaskDetailScreen } from "./taskDetails/TaskDetailScreen";

@@ -43,6 +43,5 @@ export type Task = {
 export type TasksState = {
 	list: Task[];
 	loading: boolean;
-	syncing: boolean;
 	error: string | null;
 };

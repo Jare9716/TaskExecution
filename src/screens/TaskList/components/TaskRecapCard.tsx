@@ -3,15 +3,15 @@ import { useNetInfo } from "@react-native-community/netinfo";
 
 import { TaskRecapCardProps } from "@/models";
 
-import { tasksState, getSyncStatus, getNetInfoStatus } from "./utils";
+import { tasksState, getSyncStatus, getNetInfoStatus } from "../utils";
 
 import { Spacing, Colors, Typography } from "@/styles";
 
-const TaskRecapCard = ({ tasks, syncing }: TaskRecapCardProps) => {
+const TaskRecapCard = ({ tasks, loading }: TaskRecapCardProps) => {
 	const netInfo = useNetInfo();
 
 	const { completed, pending, total } = tasksState(tasks);
-	const { text: syncText, color: syncColor } = getSyncStatus(syncing);
+	const { text: syncText, color: syncColor } = getSyncStatus(loading);
 	const { text: netInfoText, color: netInfoColor } = getNetInfoStatus(netInfo);
 
 	return (

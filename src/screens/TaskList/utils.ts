@@ -2,16 +2,6 @@ import { NetInfoState } from "@react-native-community/netinfo";
 
 import { Task, Text } from "@/models";
 
-export const getTaskStatus = (task: Task): { text: string; color: Text } => {
-	if (task.status === "available") {
-		return { text: "Pending", color: "tertiary" };
-	} else if (task.sync_status === "synced") {
-		return { text: "Synced", color: "success" };
-	} else {
-		return { text: "Syncing", color: "warning" };
-	}
-};
-
 const completedTasks = (tasks: Task[]) => {
 	return tasks.filter((task) => task.status === "completed").length;
 };
@@ -28,9 +18,9 @@ export const tasksState = (tasks: Task[]) => {
 };
 
 export const getSyncStatus = (
-	syncStatus: boolean,
+	loading: boolean,
 ): { text: string; color: Text } => {
-	if (syncStatus) {
+	if (loading) {
 		return { text: "Syncing", color: "warning" };
 	} else {
 		return { text: "Free", color: "success" };
