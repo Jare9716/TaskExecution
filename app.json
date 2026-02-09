@@ -1,47 +1,43 @@
 {
-  "expo": {
-    "name": "TaskExecution",
-    "slug": "TaskExecution",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/appIcons/Light.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/appIcons/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#174291"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.mrblonde97.TaskExecution",
-      "icon": {
-        "dark": "./assets/appIcons/Dark.png",
-        "light": "./assets/appIcons/Light.png",
-        "tinted": "./assets/appIcons/Tinted.png"
-      }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/appIcons/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "package": "com.mrblonde97.TaskExecution"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-sqlite",
-      "expo-background-task",
-      "expo-font"
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "684bbe24-6e3b-404b-9301-a1eb33a3e47c"
-      }
-    }
-  }
+	"expo": {
+		"name": "TaskExecution",
+		"slug": "TaskExecution",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/appicons/Light.png",
+		"userInterfaceStyle": "light",
+		"newArchEnabled": true,
+		"splash": {
+			"image": "./assets/appicons/splash-icon.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#174291"
+		},
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.mrblonde97.TaskExecution",
+			"icon": {
+				"dark": "./assets/appicons/Dark.png",
+				"light": "./assets/appicons/Light.png",
+				"tinted": "./assets/appicons/Tinted.png"
+			}
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/appicons/adaptive-icon.png",
+				"backgroundColor": "#ffffff"
+			},
+			"edgeToEdgeEnabled": true,
+			"predictiveBackGestureEnabled": false,
+			"package": "com.mrblonde97.TaskExecution"
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"plugins": ["expo-sqlite", "expo-background-task", "expo-font"],
+		"extra": {
+			"eas": {
+				"projectId": "684bbe24-6e3b-404b-9301-a1eb33a3e47c"
+			}
+		}
+	}
 }
