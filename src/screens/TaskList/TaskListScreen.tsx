@@ -73,12 +73,12 @@ const TaskListScreen = () => {
 						style={styles.button}
 					/>
 					{/* TODO: Remove this button */}
-					<FilledButton
+					{/* <FilledButton
 						title="Clear database"
 						onPress={clearDatabase}
 						iconName="delete"
 						style={styles.button}
-					/>
+					/> */}
 				</View>
 			</SafeAreaView>
 		</LoadingView>
