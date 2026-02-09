@@ -67,11 +67,9 @@ export const completeTask = createAsyncThunk(
 );
 
 // Thunk: Sync Manager (The background job)
-//TODO: THIS THUNK IS BEEING CALLED CONSTANTLY, I NEED TO FIX THIS
 export const syncPendingTasks = createAsyncThunk(
 	"tasks/sync",
 	async (_, { rejectWithValue }) => {
-		//TODO: check if we can use useNetInfo here
 		const netStatus = await NetInfo.fetch();
 
 		if (!netStatus.isConnected) {

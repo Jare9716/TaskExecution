@@ -4,7 +4,7 @@ import { LoadingViewProps } from "@/models";
 
 import { Colors } from "@/styles";
 
-export function LoadingView({ children, loading }: LoadingViewProps) {
+export const LoadingView = ({ children, loading }: LoadingViewProps) => {
 	return (
 		<>
 			{children}
@@ -15,7 +15,7 @@ export function LoadingView({ children, loading }: LoadingViewProps) {
 			)}
 		</>
 	);
-}
+};
 
 export const styles = StyleSheet.create({
 	loadingViewContainer: {

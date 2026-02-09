@@ -4,11 +4,8 @@
  * Encapsulates Redux dispatching, data selection, and side effects.
  */
 import { useCallback } from "react";
-
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-
 import { loadTasks, completeTask, syncPendingTasks } from "../task.slice";
-
 import { TaskAuditData } from "@/models";
 
 export const useTasks = () => {
@@ -20,15 +17,15 @@ export const useTasks = () => {
 	const error = useAppSelector((state) => state.tasks.error);
 
 	/**
-	 * Forzar una recarga manual (Pull-to-refresh)
+	 * Manually triggers a data refresh (Pull-to-refresh).
 	 */
 	const refresh = useCallback(() => {
 		return dispatch(loadTasks()).unwrap();
 	}, [dispatch]);
 
 	/**
-	 * Guardar una auditoría (Offline-First Action)
-	 * Esto guarda en SQLite inmediatamente y agenda el Sync.
+	 * Saves a task audit (Offline-First Action).
+	 * Persists to SQLite immediately and schedules background sync.
 	 */
 	const auditTask = useCallback(
 		async (taskId: string, data: TaskAuditData) => {
@@ -38,8 +35,8 @@ export const useTasks = () => {
 	);
 
 	/**
-	 * Reintentar subir cambios pendientes manualmente
-	 * Útil si el usuario ve un icono de "Error de Sync" y lo toca.
+	 * Manually retries syncing pending changes.
+	 * Useful for UI feedback when the user taps on a "Sync Error" icon.
 	 */
 	const forceSync = useCallback(() => {
 		dispatch(syncPendingTasks());
