@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet, AppState } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useNavigation } from "@react-navigation/native";
@@ -38,6 +38,15 @@ const TaskListScreen = () => {
 
 	useEffect(() => {
 		refresh();
+		const subscription = AppState.addEventListener("change", (nextAppState) => {
+			if (nextAppState === "active") {
+				refresh();
+			}
+		});
+
+		return () => {
+			subscription.remove();
+		};
 	}, []);
 
 	return (
@@ -88,7 +97,8 @@ const styles = StyleSheet.create({
 		gap: Spacing.spacing.x2,
 	},
 	buttonContainer: {
-		paddingVertical: Spacing.spacing.x4,
+		paddingBottom: Spacing.spacing.x4,
+		gap: Spacing.spacing.x2,
 	},
 	button: {
 		...Buttons.filledLarge.primary,

@@ -3,8 +3,7 @@
  * @description Custom hook that acts as a Facade for the Task feature.
  * Encapsulates Redux dispatching, data selection, and side effects.
  */
-import { useEffect, useCallback } from "react";
-import NetInfo from "@react-native-community/netinfo";
+import { useCallback } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
@@ -17,18 +16,8 @@ export const useTasks = () => {
 
 	const tasks = useAppSelector((state) => state.tasks.list);
 	const loading = useAppSelector((state) => state.tasks.loading);
+	const syncing = useAppSelector((state) => state.tasks.syncing);
 	const error = useAppSelector((state) => state.tasks.error);
-
-	//TODO: check if we can use useNetInfo here
-	useEffect(() => {
-		const unsubscribe = NetInfo.addEventListener((state) => {
-			if (state.isConnected) {
-				dispatch(syncPendingTasks());
-			}
-		});
-
-		return () => unsubscribe();
-	}, [dispatch]);
 
 	/**
 	 * Forzar una recarga manual (Pull-to-refresh)
@@ -59,6 +48,7 @@ export const useTasks = () => {
 	return {
 		tasks,
 		loading,
+		syncing,
 		error,
 		refresh,
 		auditTask,

@@ -1,33 +1,38 @@
 {
-  "expo": {
-    "name": "TaskExecution",
-    "slug": "TaskExecution",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      "expo-sqlite"
-    ]
-  }
+	"expo": {
+		"name": "TaskExecution",
+		"slug": "TaskExecution",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/appIcons/Light.png",
+		"userInterfaceStyle": "light",
+		"newArchEnabled": true,
+		"splash": {
+			"image": "./assets/appIcons/splash-icon.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#174291"
+		},
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.mrblonde97.TaskExecution",
+			"icon": {
+				"dark": "./assets/appIcons/Dark.png",
+				"light": "./assets/appIcons/Light.png",
+				"tinted": "./assets/appIcons/Tinted.png"
+			}
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/appIcons/adaptive-icon.png",
+				"backgroundColor": "#ffffff"
+			},
+			"edgeToEdgeEnabled": true,
+			"predictiveBackGestureEnabled": false,
+			"package": "com.mrblonde97.TaskExecution"
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"plugins": ["expo-sqlite", "expo-background-task"]
+	}
 }

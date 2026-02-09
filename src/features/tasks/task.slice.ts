@@ -16,6 +16,7 @@ import { Task, TaskAuditData, TasksState, TaskStatus } from "@/models";
 const initialState: TasksState = {
 	list: [],
 	loading: false,
+	syncing: false,
 	error: null,
 };
 
@@ -135,16 +136,16 @@ const tasksSlice = createSlice({
 
 			// Sync Flow
 			.addCase(syncPendingTasks.pending, (state) => {
-				state.loading = true;
+				state.syncing = true;
 			})
 			.addCase(syncPendingTasks.fulfilled, (state, action) => {
-				state.loading = false;
+				state.syncing = false;
 				if (action.payload) {
 					state.list = action.payload;
 				}
 			})
 			.addCase(syncPendingTasks.rejected, (state, action) => {
-				state.loading = false;
+				state.syncing = false;
 				state.error = (action.payload as string) || "Error syncing tasks";
 			});
 	},

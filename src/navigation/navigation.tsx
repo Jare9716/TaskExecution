@@ -1,9 +1,10 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import * as SplashScreen from "expo-splash-screen";
 
 import { useInitDatabase } from "@/features/tasks/hooks/useInitDatabase";
-
-import * as SplashScreen from "expo-splash-screen";
+import { SyncManager } from "@/features/tasks/components/SyncManager";
+import { registerBackgroundSyncAsync } from "@/services/backgroundSync";
 
 import { RootStack } from "./rootStack";
 
@@ -11,6 +12,12 @@ SplashScreen.preventAutoHideAsync();
 
 const Navigation = () => {
 	const { loading } = useInitDatabase();
+
+	useEffect(() => {
+		registerBackgroundSyncAsync().catch((e) =>
+			console.error("Background Task registration failed:", e),
+		);
+	}, []);
 
 	const onLayoutRootView = useCallback(async () => {
 		if (!loading) {
@@ -24,6 +31,7 @@ const Navigation = () => {
 
 	return (
 		<NavigationContainer onReady={onLayoutRootView}>
+			<SyncManager />
 			<RootStack />
 		</NavigationContainer>
 	);

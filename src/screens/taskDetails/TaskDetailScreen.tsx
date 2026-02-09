@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 	},
 	buttonContainer: {
-		paddingVertical: Spacing.spacing.x4,
+		paddingBottom: Spacing.spacing.x4,
 	},
 	button: {
 		...Buttons.filledLarge.primary,

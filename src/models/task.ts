@@ -6,7 +6,6 @@
 export enum TaskStatus {
 	AVAILABLE = "available",
 	COMPLETED = "completed",
-	EXPIRED = "expired",
 }
 
 export enum SyncStatus {
@@ -43,5 +42,6 @@ export type Task = {
 export type TasksState = {
 	list: Task[];
 	loading: boolean;
+	syncing: boolean;
 	error: string | null;
 };
